@@ -2013,6 +2013,9 @@ function! fugitive#ReloadStatus(...) abort
     for tab in [mytab] + range(1,tabpagenr('$'))
       for winnr in range(1,tabpagewinnr(tab,'$'))
         if getbufvar(tabpagebuflist(tab)[winnr-1],'fugitive_type') ==# 'index'
+          " E788 에러 회피. 여기서 return 하지 않으면 E788 이 난다.
+          " 미래의 나를 위한 재현방법: :Gstatus > n > D
+          return
           execute 'tabnext '.tab
           if winnr != winnr()
             execute winnr.'wincmd w'
